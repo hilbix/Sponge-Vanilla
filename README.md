@@ -214,6 +214,7 @@ tino@sponge:~$ su -
 uname -a
 # You will see that there is a new kernel active now, so we can clean fully
 apt-get install apt-show-version
+
 apt-show-versions | grep -v '/jessie[- ]'
 # This shows some more packages with "No available version in archive", purge them, too: YMMV
 apt-get purge libboost-iostreams1.49.0:amd64 libgcrypt11:amd64 libgnutls26:amd64 libprocps0:amd64 libtasn1-3:amd64 libudev0:amd64 linux-image-3.2.0-4-amd64:amd64 python2.6-minimal:amd64
