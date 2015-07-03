@@ -16,6 +16,7 @@ Following assumptions:
 - VM has enough resources like RAM, CPU, Disk.
   - No recommendations here how much, as it is a VM these are tunable parameters which can be changed easily.
 - You do not have a direct Internet connection (no default route), only an `HTTP(S)` proxy to the outside world
+  - Note that this is best practise, as having machines directly connected to the Internet always must be considered a major security risk.  Never expose things to the Internet if there is no direct inevitable need for it.  Period.
 - You know how to use SSH and come from some Unix system which is able to directly connect to the VM
 
 Following will be explained:
@@ -25,9 +26,9 @@ Following will be explained:
 - How to setup a user `mc` which runs everything
 - How to run everything as the user `mc`
 
-Following parameters (if yours differ, change accordingly.  Sorry, I cannot help you.  Period.)
+Following parameters (if yours differ, change accordingly.  Sorry, I cannot help you.  Period.) are used in the examples below:
 
-- Machine from which you are installing is `medusa`
+- Machine from which you are installing is `medusa` (this probably is the host which runs the VM)
 - VM you are installing into is called `sponge`
 - Unprivileged user running in `medusa` and created on `sponge` for login: `tino`
 - `tino` has `su` access (so you know the `root` password of `sponge`)
