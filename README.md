@@ -47,6 +47,16 @@ Host sponge
 
 ## Setup
 
+> **Beware:**
+>
+> This guide replaces some system files unconditionally which most certainly **breaks productive servers**!
+>
+> Only do this on your dedicated new sponge VM such that nothing else harmed and you always can start fresh from scratch if something terribly goes wrong.
+> I am not responsible if you break anything with this guide.  If unsure, do not follow this!  Backups are your friend.
+
+I cannot help you if you get stuck.  Just follow this guide exactly to the point and it should work as shown.
+
+
 ### Prepare SSH login and reboot just to be sure
 
 So we have a fresh, minimal installed Debian without gateway.
@@ -94,6 +104,9 @@ iface eth0 inet static
  broadcast 192.168.122.255
  #gateway 192.168.122.1
 
+tino@sponge:~$ cat /etc/resolv.conf 
+nameserver 192.168.122.1
+
 tino@sponge:~$ df
 Filesystem              1K-blocks   Used Available Use% Mounted on
 rootfs                     329233 143652    168583  47% /
@@ -134,9 +147,59 @@ For reference just the command sequence entered:
 - `ssh-copy-id sponge` and at the prompt `yes`
 - `ssh sponge` which then brings us into the VM
 - `cat /etc/network/interfaces` to see the networking setup
+- `cat /etc/resolv.conf` to see the nameserver
 - `df` to see the filesystem setup
-- `su -` and at the password prompt the password of "root" of the VM
+- `su -` and at the password prompt the `password` of "root" of the VM
 - `reboot` to make the VM reboot
 - `ssh sponge` again to jump into the VM after reboot
 
-Note:  Thanks to it being a VM a full reboot of the VM is assumed to take less than 10 seconds.  Hence reboot can be done frequently.
+Note:  Thanks to it being a VM a full reboot of the VM is assumed to take less than 10 seconds (no, I am not kidding).  Hence reboot can be done frequently.
+
+### Setup APT
+
+It is assumed that you need a proxy `192.168.122.1:8080` to download things.  Also this is a fresh wheezy install, right?  So we do the minimum and to prepare Jessie.
+
+```
+tino@sponge:~$ su -
+echo 'Acquire::http::Proxy "http://192.168.122.1:8080/";' > /etc/apt/apt.conf
+apt-get update
+
+apt-get install sysvinit sysvinit-utils
+
+cat <<'EOF' >/etc/apt/sources.list
+deb     http://security.debian.org/     jessie/updates    main contrib non-free
+deb-src http://security.debian.org/     jessie/updates    main contrib non-free
+
+deb     http://http.debian.net/debian/  jessie            main contrib non-free
+deb-src http://http.debian.net/debian/  jessie            main contrib non-free
+deb     http://http.debian.net/debian/  jessie-updates    main contrib non-free
+deb-src http://http.debian.net/debian/  jessie-updates    main contrib non-free
+
+deb     http://http.debian.net/debian/  jessie-backports  main contrib non-free
+deb-src http://http.debian.net/debian/  jessie-backports  main contrib non-free
+EOF
+apt-get update
+apt-get install sysvinit-core
+
+apt-get upgrade
+
+apt-get dist-upgrade
+
+reboot
+```
+
+Please note that `apt-get install` asks something, so you cannot just copy+paste this on the commandline, do it command by command, please, and always finish things afterwards.  I leave a blank line after commands, which need some interaction.
+
+Notes:
+
+- This pulls a lot via the proxy, so be sure you have a fast Internet connection.
+- If some problems arise, fix them.  Each step must be completed successfully before you start the next step.
+
+
+### Cleanups and basic installs
+
+Debian minimal is not minimal.  I hate that.  So I usually clean it up a bit.  If you do like editors like `nano` in favor of `vim`, then change that to your likings.
+
+```
+tino@sponge:~$ su -
+
