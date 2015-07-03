@@ -17,6 +17,7 @@ Following assumptions:
   - No recommendations here how much, as it is a VM these are tunable parameters which can be changed easily.
 - You do not have a direct Internet connection (no default route), only an `HTTP(S)` proxy to the outside world
   - Note that this is best practise, as having machines directly connected to the Internet always must be considered a major security risk.  Never expose things to the Internet if there is no direct inevitable need for it.  Period.
+  - So much to IPv6.  Nope, firewalling is not the solution.  Firewalling is a symptom which shows the stupidity of the whole idea of having everything directly connected to the Internet!
 - You know how to use SSH and come from some Unix system which is able to directly connect to the VM
 
 Following will be explained:
