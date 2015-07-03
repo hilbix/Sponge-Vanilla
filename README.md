@@ -45,7 +45,9 @@ Host sponge
 ```
 
 
-## Setup
+## From Debian Wheezy minimal to Debian Jessy prepared to install Sponge Vanilla
+
+Note: If you just want to install Sponge Vanilla in a already existing user, skip this steps up to "Setup Sponge-Vanilla"
 
 > **Beware:**
 >
@@ -161,6 +163,7 @@ It is assumed that you need a proxy `192.168.122.1:8080` to download things.  Al
 
 ```
 tino@sponge:~$ su -
+
 echo 'Acquire::http::Proxy "http://192.168.122.1:8080/";' > /etc/apt/apt.conf
 apt-get update
 
@@ -198,8 +201,19 @@ Notes:
 
 ### Cleanups and basic installs
 
-Debian minimal is not minimal.  I hate that.  So I usually clean it up a bit.  If you do like editors like `nano` in favor of `vim`, then change that to your likings.
+Debian minimal is not really minimal.  I hate that.  So I usually clean it up a bit.  If you do like editors like `nano` in favor of `vim`, then change that to your likings.
 
 ```
 tino@sponge:~$ su -
 
+apt-get purge nano 
+
+apt-get install sudo vim
+
+reboot
+```
+
+
+## Setup Sponge-Vanilla
+
+T.B.D.
