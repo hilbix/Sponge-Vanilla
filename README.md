@@ -35,28 +35,38 @@ Following parameters (if yours differ, change accordingly.  Sorry, I cannot help
 - Network: 192.168.122.0/24
 - Proxy at: 192.168.122.1:8080
 - IP: 192.168.122.17
+- You have a setup such, that `ssh sponge` opens a connection to the VM
+
+Notes:
+- If you have no DNS for `sponge` this can be done in `~/.ssh/config` and looks like:
+```
+Host sponge
+        Hostname 192.168.122.17
+```
 
 
 ## Setup
 
-Prepare easy SSH login:
+### Prepare SSH login and reboot just to be sure
 
-From the install host:
-```
-ssh-copy-id 192.168.122.17
-```
+So we have a fresh, minimal installed Debian without gateway.
 
-Now you can do to login into the VM:
-```
-ssh 192.168.122.17
-```
-
-Let's call this `ssh sponge`.
-
-
-### What you probably see
+Note that I will leave away uninteresting clutter in future output, but here is the full one such that you can feel comfortable by seeing everything:
 
 ```
+tino@medusa:~$ ssh-copy-id sponge
+The authenticity of host '[127.1.0.4]:2207 ([127.1.0.4]:2207)' can't be established.
+ECDSA key fingerprint is 20:e1:43:06:3c:7c:19:4a:b8:2c:91:d9:d9:bf:6a:7d.
+Are you sure you want to continue connecting (yes/no)? yes
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+tino@127.1.0.4's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'sponge'"
+and check to make sure that only the key(s) you wanted were added.
+
 tino@medusa:~$ ssh sponge
 Linux sponge 3.2.0-4-amd64 #1 SMP Debian 3.2.68-1+deb7u2 x86_64
 
@@ -120,10 +130,13 @@ Last login: Fri Jul  3 14:01:35 2015 from 192.168.122.1
 tino@sponge:~$ 
 ```
 
-So we have a fresh, minimal installed Debian without gateway.
-
-Note that I will leave away uninteresting clutter in future output.
-
-
+For reference just the command sequence entered:
+- `ssh-copy-id sponge` and at the prompt `yes`
+- `ssh sponge` which then brings us into the VM
+- `cat /etc/network/interfaces` to see the networking setup
+- `df` to see the filesystem setup
+- `su -` and at the password prompt the password of "root" of the VM
+- `reboot` to make the VM reboot
+- `ssh sponge` again to jump into the VM after reboot
 
 Note:  Thanks to it being a VM a full reboot of the VM is assumed to take less than 10 seconds.  Hence reboot can be done frequently.
