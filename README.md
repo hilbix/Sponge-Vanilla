@@ -188,6 +188,10 @@ apt-get upgrade
 
 apt-get dist-upgrade
 
+apt-get dist-upgrade
+# Note the list which are "no longer required" and purge them.  YMMV
+apt-get purge   libbind9-80 libdns88 libgssglue1 libisc84 libisccc80 libisccfg82 liblwres80 openssh-blacklist openssh-blacklist-extra python-fpconst
+
 reboot
 ```
 
@@ -197,6 +201,7 @@ Notes:
 
 - This pulls a lot via the proxy, so be sure you have a fast Internet connection.
 - If some problems arise, fix them.  Each step must be completed successfully before you start the next step.
+- The `apt-get dist-upgrade` is likely to fail for the first time.  Just repeat it a second time.
 
 
 ### Cleanups and basic installs
@@ -206,12 +211,30 @@ Debian minimal is not really minimal.  I hate that.  So I usually clean it up a 
 ```
 tino@sponge:~$ su -
 
-apt-get purge nano 
+uname -a
+# You will see that there is a new kernel active now, so we can clean fully
+apt-get install apt-show-version
+apt-show-versions | grep -v '/jessie[- ]'
+# This shows some more packages with "No available version in archive", purge them, too: YMMV
+apt-get purge libboost-iostreams1.49.0:amd64 libgcrypt11:amd64 libgnutls26:amd64 libprocps0:amd64 libtasn1-3:amd64 libudev0:amd64 linux-image-3.2.0-4-amd64:amd64 python2.6-minimal:amd64
+
+# The easiest way to get rid of the very annoying default editor and other things
+apt-get purge nano
+
+apt-get purge rpcbind nfs-common
 
 apt-get install sudo vim
 
+# Be sure to add your user instead of `tino` to following command
+# such that you can use `sudo` in future instead of `su`
+# Do *not* add the `mc` user to the sudo group, this is a security risk!
+adduser tino sudo
 reboot
 ```
+
+.
+. TBD
+.
 
 
 ## Setup Sponge-Vanilla
