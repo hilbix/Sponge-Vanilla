@@ -294,9 +294,11 @@ Notes:
 tino@sponge:~$ sudo su - sponge
 
 export https_proxy=http://192.168.122.1:8080/
+export JAVA_OPTS='-Dhttp.proxyHost=192.168.122.1 -Dhttp.proxyPort=8080 -Dhttps.proxyHost=192.168.122.1 -Dhttps.proxyPort=8080'
+
 git clone https://github.com/hilbix/Sponge-Vanilla.git src
 cd src
 make
 ```
 
-(At least that's the theory.  I am working on this.)
+(I am working on this.)
