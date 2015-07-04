@@ -240,24 +240,18 @@ apt-get purge   libevent-2.0-5 libnfsidmap2 libtirpc1
 reboot
 ```
 
-Now that we have `sudo` things get easier.
+Now that we have `sudo`, things get easier.
 
-### Pull in some development things
+### Add a timeserver
 
-Probably not all packages are needed.  However it does not hurt much to install everything.
-
+You probably do not need this, however I always do this.  My timeserver is named `meine.uhr.geht.net.`
 
 ```
 tino@sponge:~$ 
 
-sudo apt-get install tmux build-essential openjdk-7-jdk
-
-# No we should configure a bit.  Pull it from where you think it's best:
-for a in .vimrc .screenr .tmux.conf; do wget http://hydra.geht.net/"$a"; done
-
+# Now add some Timeserver
 sudo apt-get install openntpd
 
-# Now add some Timeserver
 sudo tee /etc/openntpd/ntpd.conf <<EOF
 server meine.uhr.geht.net.
 EOF
@@ -269,11 +263,40 @@ EOF
 sudo reboot
 ```
 
-.
-. TBD
-.
+### Pull in development 
 
+Probably not all packages are needed.  However it does not hurt much to install everything.
+
+```
+tino@sponge:~$ 
+
+sudo apt-get install tmux build-essential openjdk-7-jdk
+
+# No we should configure a bit.  Pull it from where you think it's best:
+for a in .vimrc .screenr .tmux.conf; do wget http://hydra.geht.net/"$a"; done
+```
+
+### Setup `sponge` user
+
+```
+tino@sponge:~$ 
+
+sudo adduser --disabled-password --gecos 'Minecraft Sponge Vanilla' sponge
+```
+
+Notes:
+- The user usually gets the default shell `bash`
+- And now that everything is set up, we can install Sponge
 
 ## Setup Sponge-Vanilla
 
-T.B.D.
+```
+tino@sponge:~$ sudo su - sponge
+
+export https_proxy=http://192.168.122.1:8080/
+git clone https://github.com/hilbix/Sponge-Vanilla.git src
+cd src
+make
+```
+
+(At least that's the theory.  I am working on this.)
