@@ -206,7 +206,7 @@ Notes:
 - The `apt-get dist-upgrade` is likely to fail for the first time.  Just repeat it a second time.
 
 
-### Cleanups and basic installs
+### Cleanups and `sudo`
 
 Debian minimal is not really minimal.  I hate that.  So I usually clean it up a bit.  If you do like editors like `nano` in favor of `vim`, then change that to your likings.
 
@@ -232,7 +232,41 @@ apt-get install sudo vim
 # such that you can use `sudo` in future instead of `su`
 # Do *not* add the `mc` user to the sudo group, this is a security risk!
 adduser tino sudo
+
+apt-get upgrade
+# Again, something no more needed to purge.  YMMV
+apt-get purge   libevent-2.0-5 libnfsidmap2 libtirpc1
+
 reboot
+```
+
+Now that we have `sudo` things get easier.
+
+### Pull in some development things
+
+Probably not all packages are needed.  However it does not hurt much to install everything.
+
+
+```
+tino@sponge:~$ 
+
+sudo apt-get install tmux build-essential openjdk-7-jdk
+
+# No we should configure a bit.  Pull it from where you think it's best:
+for a in .vimrc .screenr .tmux.conf; do wget http://hydra.geht.net/"$a"; done
+
+sudo apt-get install openntpd
+
+# Now add some Timeserver
+sudo tee /etc/openntpd/ntpd.conf <<EOF
+server meine.uhr.geht.net.
+EOF
+sudo /etc/init.d/openntpd restart
+sudo tee -a /etc/network/interfaces <<EOF
+ up route add -host meine.uhr.geht.net. gw 192.168.122.1
+EOF
+
+sudo reboot
 ```
 
 .
