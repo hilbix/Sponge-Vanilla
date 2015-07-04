@@ -270,7 +270,7 @@ Probably not all packages are needed.  However it does not hurt much to install 
 ```
 tino@sponge:~$ 
 
-sudo apt-get install tmux build-essential openjdk-7-jdk
+sudo apt-get install tmux git build-essential openjdk-7-jdk
 
 # No we should configure a bit.  Pull it from where you think it's best:
 for a in .vimrc .screenr .tmux.conf; do wget http://hydra.geht.net/"$a"; done
