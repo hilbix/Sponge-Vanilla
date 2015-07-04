@@ -290,6 +290,29 @@ Notes:
 
 ## Setup Sponge-Vanilla
 
+### Set the proxies
+
+> You do not need this step if you are connected transparently to the Internet.
+
+If you are behind a proxy, you need to source them, such that everything works as expected.
+
+```
+tino@sponge:~$ sudo su - sponge
+
+cat <<'EOF' >> ~/.bashrc
+
+# Proxy settings
+PHOST=192.168.122.1
+PPORT=8080
+export http_proxy=http://$PHOST:$PPORT/
+export https_proxy=http://$PHOST:$PPORT/
+export JAVA_OPTS="-Dhttp.proxyHost=$PHOST -Dhttp.proxyPort=$PPORT -Dhttps.proxyHost=$PHOST -Dhttps.proxyPort=$PPORT"
+EOF
+
+. ~/.bashrc
+```
+
+### Checkout source
 ```
 tino@sponge:~$ sudo su - sponge
 
