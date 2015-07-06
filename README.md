@@ -1,4 +1,4 @@
-> This is pre Alpha
+> This is preliminary.  It works, but it could be easier
 
 # Run Sponge Vanilla in a VM
 
