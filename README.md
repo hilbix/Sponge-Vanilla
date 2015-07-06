@@ -270,7 +270,7 @@ Probably not all packages are needed.  However it does not hurt much to install 
 ```
 tino@sponge:~$ 
 
-sudo apt-get install tmux git build-essential openjdk-7-jdk
+sudo apt-get install tmux git build-essential openjdk-7-jdk liblog4j1.2-java
 
 # No we should configure a bit.  Pull it from where you think it's best:
 for a in .vimrc .screenr .tmux.conf; do wget http://hydra.geht.net/"$a"; done
@@ -312,16 +312,64 @@ EOF
 . ~/.bashrc
 ```
 
-### Checkout source
+### Checkout source, build and install
 ```
 tino@sponge:~$ sudo su - sponge
-
-export https_proxy=http://192.168.122.1:8080/
-export JAVA_OPTS='-Dhttp.proxyHost=192.168.122.1 -Dhttp.proxyPort=8080 -Dhttps.proxyHost=192.168.122.1 -Dhttps.proxyPort=8080'
 
 git clone https://github.com/hilbix/Sponge-Vanilla.git src
 cd src
 make
 ```
 
-(I am working on this.)
+### Install Sponge
+
+```
+tino@sponge:~$ sudo su - sponge
+
+mkdir sponge
+cp src/jar/spongevanilla.jar sponge/
+cd sponge
+java -Xms1024M -Xmx1024M -jar spongevanilla.jar
+```
+This crashes, because it cannot connect to the Internet.  There are 2 variants how to fix this:
+
+#### Run spongevanilla with proxy setting
+
+This means, it can transparently connect to the Internet.
+
+```
+java $JAVA_OPTS -Xms1024M -Xmx1024M -jar spongevanilla.jar
+```
+
+Note that you only need to run it with the proxies once if you want to run Sponge without a permanent Internet connectivity.
+
+
+#### Alternative: Download manually
+
+As `~/.bashrc` contains the `http_proxy` setting you can use wget:
+```
+wget https://s3.amazonaws.com/Minecraft.Download/versions/1.8/minecraft_server.1.8.jar
+cd lib
+wget https://libraries.minecraft.net/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar
+cd ..
+```
+
+Note that the URLs might change.  The Java error tells you the URL which cannot be downloaded, so you can find the correct one.
+
+
+### Configure Sponge
+
+```
+tino@sponge:~$ sudo su - sponge
+
+cd sponge
+sed -i 's/eula=false/eula=true/' eula.txt
+```
+
+#### Disable Minecraft Login servers
+
+If your server cannot transparently connect to the Internet (sadly, proxies do not help here) you must switch off the authentication check of the server:
+
+```
+sed -i 's/online-mode=true/online-mode=false/' server.properties
+```
