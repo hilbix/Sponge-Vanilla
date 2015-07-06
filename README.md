@@ -373,3 +373,12 @@ If your server cannot transparently connect to the Internet (sadly, proxies do n
 ```
 sed -i 's/online-mode=true/online-mode=false/' server.properties
 ```
+
+## Run Sponge
+
+```
+tino@sponge:~$ sudo su - sponge
+
+cd sponge
+java -Xms1024M -Xmx1024M -jar spongevanilla.jar
+```
