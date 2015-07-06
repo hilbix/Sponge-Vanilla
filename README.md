@@ -1,4 +1,6 @@
 > This is preliminary.  It works, but it could be easier
+>
+> Also for me Sponge currently crashes with "Exception ticking world"
 
 # Run Sponge Vanilla in a VM
 
